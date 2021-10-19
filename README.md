@@ -2,32 +2,18 @@
 
 A sample project for testing the nginx location and proxy_pass configuration scenario.
 
-# Run with maven
+# Recommend: Run with docker-compose
 
 ```
-mvn spring-boot:run
+docker-compose up -d
 ```
 
-# Run with docker
+This command will run a very simple server container(It just response with the request URL ) and a nginx container. 
+
+You can modify nginx configuration file and restart nginx to apply the latest configuration.
 
 ```
-docker run -it --rm --name nlpp -v "$(pwd)":/usr/src/nlpp -v "$HOME/.m2":/root/.m2  -w /usr/src/nlpp maven:3.8.2-openjdk-16 mvn spring-boot:run
-```
-
-* **docker run** , Will automatically download the image, create a container and start the container;
-* **-it** , The output is displayed on the console, and if input is required, it can be entered through the console;
-* **--rm** ,If you stop the container, will remove it automatically;
-* **--name nlpp** , the name of the container;
-* **-v "$(pwd)":/usr/src/nlpp** , Indicates mapping the current directory (for example: /var/www/projects/nlpp) to the /usr/src/nlpp directory within the container;
-* **-w /usr/src/nlpp** , This means that inside the container, /usr/src/nlpp is used as the working directory for running maven, which, together with the -v mapping, actually means that the current directory is used as the working directory for running;
-* **-v "$HOME/.m2":/root/.m2** , Mapping the maven cache in the container to the host, avoiding the need to download dependency packages every time the container is started;
-* **maven:3.8.2-openjdk-16** , The image will run;
-* **mvn spring-boot:run** , The maven command you want to run.
-
-# Run with docker-compose
-
-```
-docker-compose up
+docker-compose restart nginx
 ```
 
 # Configuration Scenario
@@ -129,6 +115,26 @@ POST http://nlpp.futlabs.com/user/search | http://app:8080/query/?entity=user
 ```
 
 
+# Appendix I: Run the simple server with maven
 
+```
+mvn spring-boot:run
+```
+
+# Appendix II: Run the simple server with docker
+
+```
+docker run -it --rm --name nlpp -v "$(pwd)":/usr/src/nlpp -v "$HOME/.m2":/root/.m2  -w /usr/src/nlpp maven:3.8.2-openjdk-16 mvn spring-boot:run
+```
+
+* **docker run** , Will automatically download the image, create a container and start the container;
+* **-it** , The output is displayed on the console, and if input is required, it can be entered through the console;
+* **--rm** ,If you stop the container, will remove it automatically;
+* **--name nlpp** , the name of the container;
+* **-v "$(pwd)":/usr/src/nlpp** , Indicates mapping the current directory (for example: /var/www/projects/nlpp) to the /usr/src/nlpp directory within the container;
+* **-w /usr/src/nlpp** , This means that inside the container, /usr/src/nlpp is used as the working directory for running maven, which, together with the -v mapping, actually means that the current directory is used as the working directory for running;
+* **-v "$HOME/.m2":/root/.m2** , Mapping the maven cache in the container to the host, avoiding the need to download dependency packages every time the container is started;
+* **maven:3.8.2-openjdk-16** , The image will run;
+* **mvn spring-boot:run** , The maven command you want to run.
 
 
