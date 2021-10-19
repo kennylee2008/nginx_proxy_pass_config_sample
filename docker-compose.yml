@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+
+  app:
+    image: maven:3.8.2-openjdk-16
+    container_name: app
+    restart: always
+    working_dir: /usr/src/app
+    command: "mvn spring-boot:run"
+    expose:
+      - '8080'
+    volumes:
+      - .:/usr/src/app
+      - ${HOME}/.m2:/root/.m2
+    networks:
+      - custom-network
+
+  nginx:
+    image: nginx:1.21.0
+    container_name: nginx
+    ports:
+      - '80:80'
+    restart: always
+    volumes:
+      - ./nginx/conf:/etc/nginx/conf.d
+    networks:
+      - custom-network
+networks:
+  custom-network:
+    name: custom-network
+    driver: bridge
